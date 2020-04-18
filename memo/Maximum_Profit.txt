@@ -1,0 +1,133 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+)
+
+func main() {
+	maximumProfit()
+}
+
+// =================================
+// I/O util
+// =================================
+
+var sc = bufio.NewScanner(os.Stdin)
+
+func nextLine() string {
+	sc.Scan()
+	return sc.Text()
+}
+
+func nextInt() int {
+	sc.Scan()
+	i, e := strconv.Atoi(sc.Text())
+	if e != nil {
+		panic(e)
+	}
+	return i
+}
+
+// =================================
+
+func maximumProfit() {
+	n := nextInt()
+
+	s := make([]int, n)
+	for i := range s {
+		v := nextInt()
+		s[i] = v
+	}
+
+	maxV := -2000000000
+	minV := 2000000000
+	for _, v := range s {
+		if m := v - minV; maxV < m {
+			maxV = m
+		}
+		if v < minV {
+			minV = v
+		}
+	}
+	//for i := 1; i < n; i++ {
+	//	if m := s[i] - minV; maxV < m {
+	//		maxV = m
+	//	}
+	//	if s[i] < minV {
+	//		minV = s[i]
+	//	}
+	//}
+
+	fmt.Println(maxV)
+}
+
+//func maximumProfit() {
+//	var n int
+//	fmt.Scan(&n)
+//
+//	s := make([]int, n)
+//	for i := range s {
+//		var v int
+//		fmt.Scan(&v)
+//
+//		s[i] = v
+//	}
+//
+//	// min value in init time
+//	r := -2000000000
+//	for i, v := range s {
+//		for _, w := range s[i+1:] {
+//			if m := w - v; r < m {
+//				r = m
+//			}
+//		}
+//	}
+//
+//	fmt.Println(r)
+//}
+
+//func maximumProfit() {
+//	var n int
+//	fmt.Scan(&n)
+//
+//	// max value/min value/min index
+//	var maxV, minV, minI int
+//
+//	s := make([]int, n)
+//	for i := range s {
+//		var v int
+//		fmt.Scan(&v)
+//
+//		// min value init
+//		if minV == 0 {
+//			minV = v
+//		}
+//
+//		// min only
+//		if v < minV && i != (n-1) {
+//			minV = v
+//			minI = i
+//		}
+//		s[i] = v
+//	}
+//
+//	// split slice
+//	maxV = maxInSlice(s[minI+1:])
+//
+//	// delete ===
+//	fmt.Println()
+//	// delete ===
+//	fmt.Println(maxV - minV)
+//}
+//
+//func maxInSlice(s []int) (max int) {
+//	for _, v := range s {
+//		if max < v {
+//			max = v
+//		}
+//	}
+//	return max
+//}
