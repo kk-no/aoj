@@ -2,53 +2,11 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strconv"
 )
 
-type Entry struct {
-	name  string
-	value int
-}
-
-func main() {
-	sc.Split(bufio.ScanWords)
-	n, q := nextInt(), nextInt()
-
-	queue := make([]string, n)
-	m := make(map[string]int, n)
-	for i := range queue {
-		k := nextLine()
-		queue[i] = k
-		v := nextInt()
-		m[k] = v
-	}
-	r := make([]Entry, 0, n)
-	var t int
-	for len(queue) != 0 {
-		v := queue[0]
-		sub := m[v] - q
-
-		if sub <= 0 {
-			t += m[v]
-			m[v] = t
-			queue = queue[1:]
-
-			e := Entry{v, t}
-			r = append(r, e)
-		} else {
-			t += q
-			m[v] = m[v] - q
-			queue = queue[1:]
-			queue = append(queue, v)
-		}
-	}
-
-	for _, v := range r {
-		fmt.Println(v.name, v.value)
-	}
-}
+func main() {}
 
 // =================================
 // I/O util

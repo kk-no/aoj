@@ -1,0 +1,172 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
+
+var dummy = &Node{}
+
+type Node struct {
+	key        int
+	next, prev *Node
+}
+
+func init() {
+	// key = 0
+	dummy.next = dummy
+	dummy.prev = dummy
+}
+
+func main() {
+	n := nextInt()
+
+	for i := 0; i < n; i++ {
+		v := strings.Split(nextLine(), " ")
+		cmd := v[0]
+
+		switch cmd {
+		case "insert":
+			num, err := strconv.Atoi(v[1])
+			if err != nil {
+				panic("error")
+			}
+			insert(num)
+		case "delete":
+			num, err := strconv.Atoi(v[1])
+			if err != nil {
+				panic("error")
+			}
+			deleteKey(num)
+		case "deleteFirst":
+			deleteFirst()
+		case "deleteLast":
+			deleteLast()
+		default:
+			panic("error")
+		}
+	}
+
+	printLine()
+}
+
+func printLine() {
+	cur := dummy.next
+	r := make([]string, 0, 1000000)
+	for cur != dummy {
+		r = append(r, strconv.Itoa(cur.key))
+		cur = cur.next
+	}
+	fmt.Println(strings.Join(r, " "))
+}
+
+func insert(key int) {
+	node := &Node{key: key}
+	node.next = dummy.next
+	dummy.next.prev = node
+	dummy.next = node
+	node.prev = dummy
+}
+
+func deleteNode(node *Node) {
+	node.prev.next = node.next
+	node.next.prev = node.prev
+}
+
+func deleteKey(key int) {
+	node := search(key)
+	if node == dummy {
+		return
+	}
+	deleteNode(node)
+}
+
+func deleteFirst() {
+	deleteNode(dummy.next)
+}
+
+func deleteLast() {
+	deleteNode(dummy.prev)
+}
+
+func search(key int) *Node {
+	cur := dummy.next
+	for cur != dummy {
+		if cur.key == key {
+			return cur
+		}
+		cur = cur.next
+	}
+	return cur
+}
+
+// =================================
+// I/O util
+// =================================
+
+var sc = bufio.NewScanner(os.Stdin)
+
+// Scan required
+func nextLine() string {
+	sc.Scan()
+	return sc.Text()
+}
+
+func nextInt() int {
+	sc.Scan()
+	i, e := strconv.Atoi(sc.Text())
+	if e != nil {
+		panic(e)
+	}
+	return i
+}
+
+// =================================
+
+// =================================
+// FAIL MEMO (time out)
+// =================================
+
+// s := make([]string, 0, 1000000)
+//for i := 0; i < n; i++ {
+//	v := strings.Split(nextLine(), " ")
+//	switch v[0] {
+//	case "insert":
+//		s = append([]string{v[1]}, s...)
+//	case "delete":
+//	case "deleteFirst":
+//		s = s[1:]
+//	case "deleteLast":
+//		s = s[:len(s)-1]
+//	default:
+//		panic("error")
+//	}
+//}
+//fmt.Println(strings.Join(s, " "))
+
+////&main.Node{key:0, next:(*main.Node)(0xc00000c0c0), prev:(*main.Node)(0xc00000c080)}
+//fmt.Printf("%#v", dummy)
+//fmt.Println()
+////&main.Node{key:2, next:(*main.Node)(0xc00000c080), prev:(*main.Node)(0x11835b0)}
+//fmt.Printf("%#v", dummy.next)
+//fmt.Println()
+////&main.Node{key:5, next:(*main.Node)(0x11835b0), prev:(*main.Node)(0xc00000c0c0)}
+//fmt.Printf("%#v", dummy.prev)
+//fmt.Println()
+//
+//deleteFirst()
+//
+////&main.Node{key:0, next:(*main.Node)(0xc00000c0c0), prev:(*main.Node)(0xc00000c080)}
+//fmt.Printf("%#v", dummy)
+//fmt.Println()
+////&main.Node{key:5, next:(*main.Node)(0x11835b0), prev:(*main.Node)(0xc00000c0c0)}
+//fmt.Printf("%#v", dummy.next)
+//fmt.Println()
+////&main.Node{key:5, next:(*main.Node)(0x11835b0), prev:(*main.Node)(0xc00000c0c0)}
+//fmt.Printf("%#v", dummy.prev)
+//fmt.Println()
+
+// =================================
